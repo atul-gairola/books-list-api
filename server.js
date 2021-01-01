@@ -1,30 +1,32 @@
 require("dotenv").config();
 const express = require("express");
 const { graphqlHTTP } = require("express-graphql");
+
+require("./db");
 const schema = require("./schema/graphql");
 
 const app = express();
 
 const PORT =
-  process.env.NODE_ENV === "production" ? process.env.SERVER_PORT : 8080;
+  process.env.NODE_ENV === "production"
+    ? parseInt(process.env.SERVER_PORT)
+    : 8080;
 
 app.use(
   "/graphql",
   graphqlHTTP({
     schema,
-    graphiql: true
+    graphiql: true,
   })
 );
 
 // listens on PORT
 app
   .listen(PORT, () => {
-    console.log(
-      `------------------- Server listening on PORT : ${PORT} -------------------`
-    );
+    console.log(`Server listening on PORT : ${PORT}`);
   })
   .on("error", (e) => {
     console.error(
-      `Error listening on PORT : ${PORT} ------------ \n${e.message}\n------------------`
+      `------------------\nError listening on PORT : ${PORT}\n${e.message}\n------------------`
     );
   });
