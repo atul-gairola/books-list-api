@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 
 const authorSchema = new Schema(
   {
-    name: String,
-    age: Number,
+    name: { type: String, required: true },
+    age: { type: Number, required: true },
   },
   {
     timestamps: true,
