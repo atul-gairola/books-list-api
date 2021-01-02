@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const { graphqlHTTP } = require("express-graphql");
+const cors = require("cors");
 
 require("./db");
 const schema = require("./schema/graphql");
@@ -11,6 +12,9 @@ const PORT =
   process.env.NODE_ENV === "production"
     ? parseInt(process.env.SERVER_PORT)
     : 8080;
+
+// allow cross origin requests
+app.use(cors());
 
 app.use(
   "/graphql",
