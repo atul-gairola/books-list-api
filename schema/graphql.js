@@ -5,12 +5,11 @@ const {
   GraphQLID,
   GraphQLInt,
   GraphQLList,
-  GraphQLNonNull
+  GraphQLNonNull,
 } = require("graphql");
 
 const Book = require("../db/models/book");
 const Author = require("../db/models/author");
-
 
 const BookType = new GraphQLObjectType({
   name: "Book",
@@ -120,6 +119,21 @@ const Mutation = new GraphQLObjectType({
           return doc;
         } catch (e) {
           console.log("Error while saving new book to the DB :\n", e);
+        }
+      },
+    },
+    deleteBook: {
+      type: BookType,
+      args: {
+        bookId: { type: new GraphQLNonNull(GraphQLID) },
+      },
+      resolve(parent, args) {
+        try {
+          const removedBook = Book.findByIdAndDelete(args.bookId);
+          console.log("Book deleted successfully : ", args.bookId);
+          return removedBook;
+        } catch (e) {
+          console.log("Error while deleting the book :\n", e);
         }
       },
     },
